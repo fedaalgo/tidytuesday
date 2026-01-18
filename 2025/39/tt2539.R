@@ -73,8 +73,4 @@ df |>
   geom_point() +
   theme_minimal()
 
-# model ----
-
-# communicate ----
-
 # ...

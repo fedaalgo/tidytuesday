@@ -40,7 +40,15 @@ dfc <-
 # understand ----
 
 # names
-df |> 
+dfa |> 
+  slice(0) |> 
+  glimpse()
+
+dfb |> 
+  slice(0) |> 
+  glimpse()
+
+dfc |> 
   slice(0) |> 
   glimpse()
 
@@ -52,5 +60,25 @@ df |>
 dfa |> 
   group_by(status_label) |> 
   summarise(n = n())
+
+dfa |> 
+  filter(id == "salv1237") |> 
+  glimpse()
+
+dfc |> 
+  filter(countries == "SV") |> 
+  glimpse()
+
+dfc |> 
+  filter(countries == "PE") |> 
+  View()
+
+dfa |> 
+  filter(id == "puno1238") |> 
+  glimpse()
+
+dfb |> 
+  filter(id == "puno1238") |> 
+  glimpse()
 
 # ...

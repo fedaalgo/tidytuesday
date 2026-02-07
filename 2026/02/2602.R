@@ -72,6 +72,9 @@ df |>
   mutate(color_group = rep(1:6, length.out = n())) |> 
   ggplot(aes(x = total, y = reorder(country, total), fill = factor(color_group))) +
   geom_col() +
+  geom_text(aes(label = scales::comma(total)), 
+            hjust = -0.2, 
+            size = 3) +
   scale_fill_manual(values = gruvbox_colors) +
   labs(
     title = "Native Speakers by Country",
@@ -85,8 +88,10 @@ df |>
     plot.title = element_text(size = 16, face = "bold"),
     plot.subtitle = element_text(size = 12, color = "gray40"),
     panel.grid.major.y = element_blank(),
-    plot.margin = margin(10, 20, 10, 10)
+    plot.margin = margin(10, 20, 10, 10),
+    axis.text.x = element_blank(),
+    panel.grid.major.x = element_blank()
   ) +
-  scale_x_continuous(labels = scales::comma)
+  scale_x_continuous(expand = expansion(mult = c(0, 0.15)))
 
 ggsave("native_speakers.png", width = 12, height = 8, dpi = 300)

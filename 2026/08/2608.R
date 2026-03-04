@@ -37,20 +37,42 @@ df |>
   glimpse() |>
   skim()
 
-# tokenize
-# df |>
-#   unnest_tokens(output = word, input = variable) |>
-#   anti_join(stop_words, by = "word") |>
-#   group_by(word) |>
-#   summarise(n = n()) |>
-#   arrange(desc(n))
-
-# transform ----
-
-# visualise ----
-
-# model ----
-
-# communicate ----
-
 # ...
+
+# SFI was the national foundation in Ireland for investment in
+# scientific and engineering research. Consequently, SFI invested in
+# those academic researchers and research teams who were most likely
+# to generate new knowledge, leading edge technologies and
+# competitive enterprises in the fields of science, technology,
+# engineering and maths (STEM).
+
+# which institute received the most grant funding?
+
+df |>
+  group_by(research_body) |>
+  summarise(total_funding = sum(current_total_commitment, na.rm = TRUE)) |>
+  arrange(desc(total_funding)) |>
+  slice(1)
+
+# how much did sfi invest into research each year?
+
+df |>
+  mutate(year = year(start_date)) |>
+  group_by(year) |>
+  summarise(total_funding = sum(current_total_commitment, na.rm = TRUE)) |> 
+  ggplot(mapping = aes(x = year, y = total_funding)) +
+  geom_line() +
+  scale_y_continuous(labels = function(x) format(x, big.mark = ",", scientific = FALSE)) +
+  labs(
+    title = "Science Foundation Ireland Grants Commitments",
+    subtitle = "Research Investment per Year",
+    caption = "data pulled from https://github.com/rfordatascience/tidytuesday/blob/main/data/2026/2026-02-24/readme.md"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.title.y = element_blank(),
+    plot.subtitle = element_text(color = "#000000"),
+    plot.caption = element_text(family = "mono")
+  )
+
+ggsave("plot.png", width = 12, height = 8, dpi = 300)

@@ -73,7 +73,7 @@ ggbetweenstats(
   title = "Temperature Requirements by Sunlight Needs"
 )
 
-ggsave("ggbetweenstats.png",  width = 12, height = 8, dpi = 300)
+ggsave("ggbetweenstats.png", width = 12, height = 8, dpi = 300)
 
 # To investigate whether plants requiring more sunlight also require
 # higher temperatures, a Kruskal-Wallis test comparing average growing
@@ -117,7 +117,7 @@ ggbarstats(
   theme(axis.text.x = element_text(angle = 45, hjust = 1)
 )
 
-ggsave("ggbarstats.png",  width = 12, height = 8, dpi = 300)
+ggsave("ggbarstats.png", width = 12, height = 8, dpi = 300)
 
 # To determine which cultivation classes require the most water,
 # association between cultivation class and water requirements 

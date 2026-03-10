@@ -52,12 +52,7 @@ dfb |>
   geom_point(alpha = 0.35) +
   facet_wrap( . ~ season)
 
-dfb |> 
-  group_by(season) |> 
-  summarise(n = n()) |> 
-  arrange(desc(n)) |> 
-  ggplot(aes(x = season, y = n)) +
-  geom_col()
+
 
 # ...
 
@@ -73,7 +68,37 @@ dfb |>
 
 # do recaptures happen more often in spring or summer?
 
+dfb |> count(season)
+
+dfb |>
+  arrange(individual, year) |>
+  group_by(individual) |>
+  slice(-1) |>          # drop each individual's first capture
+  ungroup() |>
+  count(season) |> 
+  ggplot(aes(x = season, y = n)) +
+  geom_col()
+
 # does it seem easier to recapture male or female tortoises?
+
+dfb |>
+  group_by(individual, sex) |>
+  summarise(n_captures = n(), .groups = "drop") |>
+  group_by(sex) |>
+  summarise(
+    n_individuals   = n(),
+    mean_recaptures = mean(n_captures - 1),   # subtract 1 for first capture
+    median_recaptures = median(n_captures - 1)
+  )
+
+dfb |>
+  group_by(individual, sex) |>
+  summarise(n_captures = n(), .groups = "drop") |>
+  group_by(sex) |>
+  summarise(
+    n_individuals     = n(),
+    prop_recaptured   = mean(n_captures > 1)
+  )
 
 # what are the differences among tortoises from the mainland 
 # vs the ones from the island in terms of body mass or carapace length?

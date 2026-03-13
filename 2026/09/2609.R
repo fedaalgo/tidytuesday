@@ -10,6 +10,7 @@
 pacman::p_load(
   data.table, # https://cran.r-project.org/web/packages/data.table/
   janitor, # https://cran.r-project.org/web/packages/janitor/
+  ggstatsplot, # https://cloud.r-project.org/web/packages/ggstatsplot/
   skimr, # https://cran.r-project.org/web/packages/skimr/
   styler, # https://cran.r-project.org/web/packages/styler/
   tidytext, # https://cran.r-project.org/web/packages/tidytext/
@@ -52,8 +53,6 @@ dfb |>
   geom_point(alpha = 0.35) +
   facet_wrap( . ~ season)
 
-
-
 # ...
 
 # In an exceptionally dense island population of Hermann's tortoises 
@@ -91,14 +90,36 @@ dfb |>
     median_recaptures = median(n_captures - 1)
   )
 
-dfb |>
-  group_by(individual, sex) |>
-  summarise(n_captures = n(), .groups = "drop") |>
-  group_by(sex) |>
-  summarise(
-    n_individuals     = n(),
-    prop_recaptured   = mean(n_captures > 1)
-  )
-
 # what are the differences among tortoises from the mainland 
 # vs the ones from the island in terms of body mass or carapace length?
+
+dfb |>
+  group_by(locality, sex) |>
+  summarise(
+    n                    = n(),
+    mean_mass            = mean(body_mass_grams, na.rm = TRUE),
+    mean_scl             = mean(straight_carapace_length_mm, na.rm = TRUE),
+    mean_bci             = mean(body_condition_index, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+dfb |>
+  ggplot(aes(x = locality, y = body_condition_index, fill = sex)) +
+  geom_boxplot() +
+  facet_wrap(~sex) +
+  theme_minimal()
+
+grouped_ggbetweenstats(
+  data             = dfb,
+  x                = locality,
+  y                = body_condition_index,
+  grouping.var     = sex,
+  type             = "nonparametric",
+  pairwise.display = "all",          # show all 3 pairwise comparisons
+  p.adjust.method  = "holm",
+  xlab             = "Locality",
+  ylab             = "Body Condition Index",
+  annotation.args  = list(title = "BCI by locality and sex")
+)
+
+ggsave("plot.png", width = 12, height = 8, dpi = 300)

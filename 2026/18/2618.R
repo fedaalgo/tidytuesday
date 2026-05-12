@@ -54,7 +54,8 @@ df |>
 
 dfa |> 
   ggplot(aes(x = year, y = beer)) +
-  geom_line()
+  geom_line() +
+  theme_minimal()
 
 # model ----
 

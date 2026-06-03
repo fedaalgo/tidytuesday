@@ -4,7 +4,7 @@
 # setup ----
 
 # library path
-.libPaths(c("~/.local/share/R/x86_64-pc-linux-gnu-library/4.5", .libPaths()))
+.libPaths(c("~/.local/share/R/x86_64-pc-linux-gnu-library/4.6", .libPaths()))
 
 # packages
 pacman::p_load(
@@ -16,28 +16,34 @@ pacman::p_load(
 )
 
 # import
-df <-
+dfa <-
   fread(
     'link.csv'
   ) |>
   clean_names()
+
+# dfb <-
+#   fread(
+#     'link.csv'
+#   ) |>
+#   clean_names()
 # dictionary
 # https://raw.
 
 # understand ----
 
 # names
-df |> 
+dfa |> 
   slice(0) |> 
   glimpse()
 
 # glimpse & skim
-df |>
+dfa |>
   glimpse() |>
   skim()
 
 # tokenize
-# df |>
+# dfa |>
 #   unnest_tokens(output = word, input = variable) |>
 #   anti_join(stop_words, by = "word") |>
 #   group_by(word) |>

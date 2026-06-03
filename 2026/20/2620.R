@@ -1,5 +1,5 @@
 # --- tidytuesday::2620 --- #
-# https://github.com/rfordatascience/tidytuesday/tree/master/data/2024/...
+# https://github.com/rfordatascience/tidytuesday/blob/main/data/2026/2026-05-12/readme.md
 
 # setup ----
 

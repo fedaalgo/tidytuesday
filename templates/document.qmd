@@ -1,0 +1,18 @@
+---
+author: "Federico Alegría"
+editor: visual
+format:
+  html:
+    embed-resources: true
+title: "."
+theme: default # https://bootswatch.com/
+toc: true
+---
+
+```{r}
+#| code-fold: true
+#| code-overflow: wrap
+#| echo: true
+#| eval: true
+#| warning: false
+```

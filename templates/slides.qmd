@@ -1,0 +1,17 @@
+---
+author: "Federico Alegría"
+title: "lorem"
+subtitle: "lorem ipsum"
+format: 
+  revealjs:
+    embed-resources: true
+editor: visual
+---
+
+```{r}
+#| code-fold: false
+#| code-overflow: wrap
+#| echo: true
+#| eval: true
+#| warning: false
+```

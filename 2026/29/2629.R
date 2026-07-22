@@ -86,16 +86,49 @@ df |>
 # - How has the rate of NDERF submissions changed over time (1999–2025)?
 # - Do deeper NDEs (higher Greyson scores) tend to have longer narratives?
 
-model <- glm(ai_clinical ~ ai_hellish, data = df, family = binomial)
+df |> 
+  filter(greyson_score >= 7)
+
+df |> 
+  select(starts_with("ai_")) |> 
+  summary()
+
+df |>
+  na.omit() |>
+  ggplot(aes(x = greyson_score, y = ai_clinical)) +
+  geom_jitter(height = .05, alpha = .1) +
+  geom_smooth(
+    method = 'glm',
+    method.args = list(family = 'binomial', se = FALSE)
+  ) +
+  theme_minimal()
+
+df |>
+  na.omit() |>
+  ggplot(aes(x = greyson_score, y = ai_obe)) +
+  geom_jitter(height = .05, alpha = .1) +
+  geom_smooth(
+    method = 'glm',
+    method.args = list(family = 'binomial', se = FALSE)
+  ) +
+  theme_minimal()
+
+model <- glm(ai_clinical ~ greyson_score, data = df, family = 'binomial')
+model <- glm(ai_obe ~ greyson_score, data = df, family = 'binomial')
+
 summary(model)
-exp(coef(model))
-exp(confint(model))
 
-df$pred_prob <- predict(model, type = "response")
-head(df[, c("ai_hellish", "ai_clinical", "pred_prob")])
+gs_sum <- df |> 
+  group_by(greyson_score) |> 
+  summarise(gs_prop = mean(ai_obe), count = n())
 
-# predict ai_clinical using all other ai_* variables
-predictors <- c("ai_obe", "ai_unity", "ai_hellish", "ai_esp", "ai_past_lives", "ai_world_future", "ai_aliens")
+ggplot(gs_sum, aes(x = greyson_score, gs_prop)) + 
+  geom_point() +
+  theme_minimal()
+
+# ----
+
+predictors <- c("ai_obe", "ai_unity", "ai_hellish", "ai_clinical", "ai_esp", "ai_past_lives", "ai_world_future", "ai_aliens")
 
 # construct formula: outcome ~ predictor1 + predictor2 + ...
 formula_str <- paste("ai_clinical ~", paste(predictors, collapse = " + "))
@@ -131,4 +164,5 @@ corrplot(cor_matrix,
          mar = c(0,0,1,0),
          addcoef.col = 'grey',
          number.cex = 0.7)
+
 
